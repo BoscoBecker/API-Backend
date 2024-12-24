@@ -1,12 +1,15 @@
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using SQLitePCL;
-using WebApplication1.Models;
+namespace WebApplication1 {
+    internal static class Program {
+        private static void Main(string[] args) {
+            var builder = WebApplication.CreateBuilder(args);
+                builder.Services.AddOpenApi();
 
-    var builder = WebApplication.CreateBuilder(args);
-    builder.Services.AddOpenApi();
-    var app = builder.Build();
-    // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment()) app.MapOpenApi();
-    builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnectionString")));
-    app.Run();
+            var app = builder.Build();
+            if (app.Environment.IsDevelopment()) app.MapOpenApi();
+            builder.Services.AddDbContext<AppDBContext>(options =>
+                options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnectionString")));
+            app.Run();
+        }
+    }
+}
